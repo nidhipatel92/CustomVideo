@@ -12,6 +12,11 @@
 		E0D1F9281FF9F7F700941A54 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0D1F9261FF9F7F700941A54 /* Main.storyboard */; };
 		E0D1F92A1FF9F7F700941A54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0D1F9291FF9F7F700941A54 /* Assets.xcassets */; };
 		E0D1F92D1FF9F7F700941A54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0D1F92B1FF9F7F700941A54 /* LaunchScreen.storyboard */; };
+		E0D1F9361FF9F84700941A54 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D1F9351FF9F84700941A54 /* AVFoundation.framework */; };
+		E0D1F9381FF9F84D00941A54 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D1F9371FF9F84D00941A54 /* AVKit.framework */; };
+		E0D1F93A1FFA015600941A54 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D1F9391FFA015600941A54 /* AssetsLibrary.framework */; };
+		E0D1F93C1FFA323D00941A54 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D1F93B1FFA323D00941A54 /* SecondViewController.swift */; };
+		E0D1F93E1FFA32FB00941A54 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D1F93D1FFA32FB00941A54 /* NavigationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +27,11 @@
 		E0D1F9291FF9F7F700941A54 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0D1F92C1FF9F7F700941A54 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E0D1F92E1FF9F7F700941A54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0D1F9351FF9F84700941A54 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E0D1F9371FF9F84D00941A54 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		E0D1F9391FFA015600941A54 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		E0D1F93B1FFA323D00941A54 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		E0D1F93D1FFA32FB00941A54 /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +39,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0D1F93A1FFA015600941A54 /* AssetsLibrary.framework in Frameworks */,
+				E0D1F9381FF9F84D00941A54 /* AVKit.framework in Frameworks */,
+				E0D1F9361FF9F84700941A54 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +53,7 @@
 			children = (
 				E0D1F9211FF9F7F500941A54 /* CustomVideo */,
 				E0D1F9201FF9F7F500941A54 /* Products */,
+				E0D1F9341FF9F84700941A54 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,8 +74,20 @@
 				E0D1F9291FF9F7F700941A54 /* Assets.xcassets */,
 				E0D1F92B1FF9F7F700941A54 /* LaunchScreen.storyboard */,
 				E0D1F92E1FF9F7F700941A54 /* Info.plist */,
+				E0D1F93B1FFA323D00941A54 /* SecondViewController.swift */,
+				E0D1F93D1FFA32FB00941A54 /* NavigationViewController.swift */,
 			);
 			path = CustomVideo;
+			sourceTree = "<group>";
+		};
+		E0D1F9341FF9F84700941A54 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0D1F9391FFA015600941A54 /* AssetsLibrary.framework */,
+				E0D1F9371FF9F84D00941A54 /* AVKit.framework */,
+				E0D1F9351FF9F84700941A54 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +162,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0D1F93E1FFA32FB00941A54 /* NavigationViewController.swift in Sources */,
+				E0D1F93C1FFA323D00941A54 /* SecondViewController.swift in Sources */,
 				E0D1F9251FF9F7F700941A54 /* ViewController.swift in Sources */,
 				E0D1F9231FF9F7F600941A54 /* AppDelegate.swift in Sources */,
 			);
