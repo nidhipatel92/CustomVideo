@@ -40,13 +40,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        if shouldRotate == true {
-            return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.RawValue(Int(UIInterfaceOrientationMask.portrait.rawValue)))
-        } else {
-            return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.RawValue(Int(UIInterfaceOrientationMask.landscapeLeft.rawValue)))
+        let navigationController = self.window?.rootViewController as? UINavigationController
+        if (navigationController?.viewControllers.last is ViewController) {
+            let secondController = navigationController?.viewControllers.last as! ViewController
+            if secondController.isPresented {
+                return .portrait
+            }else{
+               return .landscape
+            }
         }
+        else {
+            return .portrait
+        }
+    }
+
+//    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+//
+//        if self.window?.rootViewController?.presentedViewController is ViewController {
+//
+//            let secondController = self.window!.rootViewController!.presentedViewController as! ViewController
+//
+//            if secondController.isPresented {
+//                return UIInterfaceOrientationMask.all;
+//            } else {
+//                return UIInterfaceOrientationMask.portrait;
+//            }
+//        } else {
+//            return UIInterfaceOrientationMask.portrait;
+//        }
+//
+//    }
+//    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+//        if shouldRotate == true {
+//            return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.RawValue(Int(UIInterfaceOrientationMask.portrait.rawValue)))
+//        } else {
+//            return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.RawValue(Int(UIInterfaceOrientationMask.landscapeLeft.rawValue)))
+//        }
 //        if let rootViewController = self.topViewControllerWithRootViewController(rootViewController: window?.rootViewController) {
 //            if (rootViewController.responds(to: Selector(("canRotate")))) {
 //                // Unlock landscape view orientations for this view controller
@@ -56,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
 //        // Only allow portrait (standard behaviour)rootViewController.respondsToSelector(Selector("canRotate"))
 //        return .portrait;
-    }
+//    }
     
     private func topViewControllerWithRootViewController(rootViewController: UIViewController!) -> UIViewController? {
         if (rootViewController == nil) { return nil }

@@ -17,6 +17,12 @@ class ViewController: UIViewController {
     var strStartTime: NSString = "00:00"
     var sliderValue : UISlider = UISlider()
     var muted : Bool = false
+    var isPresented = true
+    
+    var p = [NSLayoutConstraint]()
+    var l = [NSLayoutConstraint]()
+    var initialOrientation = true
+    var isInPortrait = false
     
     @IBOutlet var lblVideoTime: UILabel!
     @IBOutlet var lblUpdate: UILabel!
@@ -30,6 +36,8 @@ class ViewController: UIViewController {
 //        UIDevice.current.setValue(Int(UIInterfaceOrientation.landscapeLeft.rawValue), forKey: "orientation")
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
 
+//        viewVideo.turnOffAutoResizing()
+        
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
         viewVideo.layer.insertSublayer(avPlayerLayer, at: 0)
         
@@ -66,9 +74,14 @@ class ViewController: UIViewController {
         playerSilder.addTarget(self, action: #selector(ViewController.playbackSliderValueChanged(_:)), for: .valueChanged)
     }
     override func viewWillDisappear(_ animated: Bool) {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            appDelegate.shouldRotate = true
-        }
+//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+//            appDelegate.shouldRotate = true
+//        }
+//        isInPortrait = true
+//        viewVideo.orientationHasChanged(&isInPortrait)
+        
+        let value = Int(UIInterfaceOrientation.portrait.rawValue)
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
     @objc func playbackSliderValueChanged(_ playbackSlider:UISlider)
     {
@@ -133,8 +146,24 @@ class ViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         // Layout subviews manually
+        
+        
+//        if initialOrientation {
+//            initialOrientation = false
+//            if viewVideo.frame.width > viewVideo.frame.height {
+//                isInPortrait = false
+//            } else {
+//                isInPortrait = true
+//            }
+//            viewVideo.setOrientation(p, l)
+//        } else {
+//            if viewVideo.orientationHasChanged(&isInPortrait) {
+//                viewVideo.setOrientation(p, l)
+//            }
+//        }
         avPlayerLayer.frame = viewVideo.bounds
     }
+    
     deinit {
         avPlayer.removeTimeObserver(timeObserver)
     }
@@ -189,13 +218,25 @@ class ViewController: UIViewController {
         self.updateTime()
     }
     @IBAction func btnZoomClick(_ sender: Any) {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            if appDelegate.shouldRotate == true{
-                appDelegate.shouldRotate = false
-            }else{
-                appDelegate.shouldRotate = true
-            }
+//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+//            if appDelegate.shouldRotate == true{
+//                appDelegate.shouldRotate = false
+//                isPresented = false
+//            }else{
+//                appDelegate.shouldRotate = true
+//                isPresented = true
+//            }
+//        }
+        if isPresented {
+            isPresented = false
+            let value = Int(UIInterfaceOrientation.landscapeLeft.rawValue)
+            UIDevice.current.setValue(value, forKey: "orientation")
+        }else{
+            isPresented = true
+            let value = Int(UIInterfaceOrientation.portrait.rawValue)
+            UIDevice.current.setValue(value, forKey: "orientation")
         }
+       
     }
     
     @IBAction func btnSoundClick(_ sender: Any) {
@@ -209,13 +250,48 @@ class ViewController: UIViewController {
         
     }
     
-    override var shouldAutorotate: Bool {
-        return true
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        print(UIDevice.current.orientation.isLandscape)
+        
     }
-
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .landscapeLeft
-    }
+    
+//    override var shouldAutorotate: Bool {
+//        return true
+//    }
+//
+//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+//        return .landscapeLeft
+//    }
   
 }
-
+extension UIView {
+    public func turnOffAutoResizing() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        for view in self.subviews as [UIView] {
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
+    public func orientationHasChanged(_ isInPortrait:inout Bool) -> Bool {
+        if self.frame.width > self.frame.height {
+            if isInPortrait {
+                isInPortrait = false
+                return true
+            }
+        } else {
+            if !isInPortrait {
+                isInPortrait = true
+                return true
+            }
+        }
+        return false
+    }
+    public func setOrientation(_ p:[NSLayoutConstraint], _ l:[NSLayoutConstraint]) {
+        NSLayoutConstraint.deactivate(l)
+        NSLayoutConstraint.deactivate(p)
+        if self.bounds.width > self.bounds.height {
+            NSLayoutConstraint.activate(l)
+        } else {
+            NSLayoutConstraint.activate(p)
+        }
+    }
+}

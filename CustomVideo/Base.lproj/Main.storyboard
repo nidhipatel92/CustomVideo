@@ -20,10 +20,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KEB-nq-d89">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="299"/>
+                                <rect key="frame" x="0.0" y="-1" width="375" height="242"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yp0-It-E74">
-                                        <rect key="frame" x="0.0" y="225" width="375" height="74"/>
+                                        <rect key="frame" x="0.0" y="168" width="375" height="74"/>
                                         <subviews>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ywb-eu-Mvz">
                                                 <rect key="frame" x="8" y="2" width="359" height="30"/>
@@ -104,21 +104,14 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Yp0-It-E74" secondAttribute="trailing" id="CuS-Ch-CK4"/>
                                     <constraint firstItem="Yp0-It-E74" firstAttribute="leading" secondItem="KEB-nq-d89" secondAttribute="leading" id="FUg-aZ-245"/>
-                                    <constraint firstAttribute="width" secondItem="KEB-nq-d89" secondAttribute="height" multiplier="375:299" id="Nlp-e0-PVl"/>
+                                    <constraint firstAttribute="width" secondItem="KEB-nq-d89" secondAttribute="height" multiplier="375:299" constant="71.488294314381278" id="Nlp-e0-PVl"/>
                                     <constraint firstAttribute="bottom" secondItem="Yp0-It-E74" secondAttribute="bottom" id="k1a-tT-oDr"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ph-Iy-qrq">
-                                <rect key="frame" x="7" y="330" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="KEB-nq-d89" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="2ga-5N-X4V"/>
+                            <constraint firstItem="KEB-nq-d89" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="-1" id="2ga-5N-X4V"/>
                             <constraint firstItem="KEB-nq-d89" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Whq-Va-W1d"/>
                             <constraint firstItem="KEB-nq-d89" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="pXt-l2-hC0"/>
                         </constraints>
@@ -127,7 +120,6 @@
                     <navigationItem key="navigationItem" id="iwQ-DG-d8d"/>
                     <connections>
                         <outlet property="btnPlay" destination="dUw-WW-m95" id="dNa-aj-djg"/>
-                        <outlet property="lblUpdate" destination="6ph-Iy-qrq" id="coO-mb-KQQ"/>
                         <outlet property="lblVideoTime" destination="Pde-Q5-Pst" id="qLf-sq-ngc"/>
                         <outlet property="playerSilder" destination="Ywb-eu-Mvz" id="fVg-Ms-th7"/>
                         <outlet property="viewVideo" destination="KEB-nq-d89" id="dE4-zN-cZl"/>
@@ -135,7 +127,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1162" y="98"/>
+            <point key="canvasLocation" x="1160.8" y="97.601199400299862"/>
         </scene>
         <!--Second View Controller-->
         <scene sceneID="9ew-DO-IRl">
