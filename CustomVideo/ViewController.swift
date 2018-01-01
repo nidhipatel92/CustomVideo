@@ -40,6 +40,9 @@ class ViewController: UIViewController {
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
         viewVideo.layer.insertSublayer(avPlayerLayer, at: 0)
         
+        viewVideo.layoutIfNeeded()
+        avPlayerLayer.frame = CGRect.init(x: 0, y: 0, width: viewVideo.frame.size.width, height: viewVideo.frame.size.height)
+        
         let videoURL = URL(string: "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")
         let playerItem = AVPlayerItem.init(url: videoURL!)
         avPlayer.replaceCurrentItem(with: playerItem)
@@ -81,23 +84,14 @@ class ViewController: UIViewController {
         avPlayer.play() // Start the playback
     }
     
+    override func viewDidLayoutSubviews() {
+        viewVideo.layoutIfNeeded()
+        avPlayerLayer.frame = CGRect.init(x: 0, y: 0, width: viewVideo.frame.size.width, height: viewVideo.frame.size.height)
+    }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         // Layout subviews manually
-        if initialOrientation {
-            initialOrientation = false
-            if viewVideo.frame.width > viewVideo.frame.height {
-                isInPortrait = false
-            } else {
-                isInPortrait = true
-            }
-            viewVideo.setOrientation(p, l)
-        } else {
-            if viewVideo.orientationHasChanged(&isInPortrait) {
-                viewVideo.setOrientation(p, l)
-            }
-        }
-        avPlayerLayer.frame = viewVideo.frame
+//        avPlayerLayer.frame = viewVideo.frame
     }
     
     deinit {
@@ -228,36 +222,5 @@ class ViewController: UIViewController {
             muted = true
         }
         
-    }
-}
-extension UIView {
-    public func turnOffAutoResizing() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        for view in self.subviews as [UIView] {
-            view.translatesAutoresizingMaskIntoConstraints = false
-        }
-    }
-    public func orientationHasChanged(_ isInPortrait:inout Bool) -> Bool {
-        if self.frame.width > self.frame.height {
-            if isInPortrait {
-                isInPortrait = false
-                return true
-            }
-        } else {
-            if !isInPortrait {
-                isInPortrait = true
-                return true
-            }
-        }
-        return false
-    }
-    public func setOrientation(_ p:[NSLayoutConstraint], _ l:[NSLayoutConstraint]) {
-        NSLayoutConstraint.deactivate(l)
-        NSLayoutConstraint.deactivate(p)
-        if self.bounds.width > self.bounds.height {
-            NSLayoutConstraint.activate(l)
-        } else {
-            NSLayoutConstraint.activate(p)
-        }
     }
 }
