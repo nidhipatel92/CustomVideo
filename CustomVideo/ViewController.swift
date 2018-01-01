@@ -25,18 +25,17 @@ class ViewController: UIViewController {
     var isInPortrait = false
     
     @IBOutlet var lblVideoTime: UILabel!
-    @IBOutlet var lblUpdate: UILabel!
     @IBOutlet var viewVideo: UIView!
     @IBOutlet var playerSilder: UISlider!
     
     @IBOutlet var btnPlay: UIButton!
+    
+    // MARK: - Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-//        UIDevice.current.setValue(Int(UIInterfaceOrientation.landscapeLeft.rawValue), forKey: "orientation")
+        
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
-
-//        viewVideo.turnOffAutoResizing()
         
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
         viewVideo.layer.insertSublayer(avPlayerLayer, at: 0)
@@ -44,7 +43,7 @@ class ViewController: UIViewController {
         let videoURL = URL(string: "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")
         let playerItem = AVPlayerItem.init(url: videoURL!)
         avPlayer.replaceCurrentItem(with: playerItem)
-        
+
         let currentPlayerItem = avPlayer.currentItem
         let duration = currentPlayerItem?.asset.duration
         print("Duration: \(CMTimeGetSeconds(duration!))")
@@ -53,8 +52,6 @@ class ViewController: UIViewController {
         print("New Time: \(newTime)")
         strStartTime = newTime as NSString
         lblVideoTime.text = "00:00" + "/" + (strStartTime as String) as String
-        lblUpdate.isHidden = true
-//        lblUpdate.text = "00:00"
         
         let timeInterval: CMTime = CMTimeMakeWithSeconds(1.0, 10)
         timeObserver = avPlayer.addPeriodicTimeObserver(forInterval: timeInterval,queue: DispatchQueue.main)
@@ -72,17 +69,42 @@ class ViewController: UIViewController {
         playerSilder.tintColor = UIColor.red
         playerSilder.thumbTintColor = UIColor.clear
         playerSilder.addTarget(self, action: #selector(ViewController.playbackSliderValueChanged(_:)), for: .valueChanged)
+        
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
-//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-//            appDelegate.shouldRotate = true
-//        }
-//        isInPortrait = true
-//        viewVideo.orientationHasChanged(&isInPortrait)
-        
         let value = Int(UIInterfaceOrientation.portrait.rawValue)
         UIDevice.current.setValue(value, forKey: "orientation")
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        avPlayer.play() // Start the playback
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        // Layout subviews manually
+        if initialOrientation {
+            initialOrientation = false
+            if viewVideo.frame.width > viewVideo.frame.height {
+                isInPortrait = false
+            } else {
+                isInPortrait = true
+            }
+            viewVideo.setOrientation(p, l)
+        } else {
+            if viewVideo.orientationHasChanged(&isInPortrait) {
+                viewVideo.setOrientation(p, l)
+            }
+        }
+        avPlayerLayer.frame = viewVideo.frame
+    }
+    
+    deinit {
+        avPlayer.removeTimeObserver(timeObserver)
+    }
+    
+     // MARK: - Custom Methods
     @objc func playbackSliderValueChanged(_ playbackSlider:UISlider)
     {
         let seconds : Int64 = Int64(playbackSlider.value)
@@ -134,40 +156,6 @@ class ViewController: UIViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        avPlayer.play() // Start the playback
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        // Layout subviews manually
-        
-        
-//        if initialOrientation {
-//            initialOrientation = false
-//            if viewVideo.frame.width > viewVideo.frame.height {
-//                isInPortrait = false
-//            } else {
-//                isInPortrait = true
-//            }
-//            viewVideo.setOrientation(p, l)
-//        } else {
-//            if viewVideo.orientationHasChanged(&isInPortrait) {
-//                viewVideo.setOrientation(p, l)
-//            }
-//        }
-        avPlayerLayer.frame = viewVideo.bounds
-    }
-    
-    deinit {
-        avPlayer.removeTimeObserver(timeObserver)
-    }
-    
     private func updateTimeLabel(elapsedTime: Float64, duration: Float64) {
         let timeRemaining: Float64 = CMTimeGetSeconds(avPlayer.currentItem!.duration) - elapsedTime
         lblVideoTime.text = String(format: "%02d:%02d", ((lround(timeRemaining) / 60) % 60), lround(timeRemaining) % 60)
@@ -179,6 +167,7 @@ class ViewController: UIViewController {
         updateTimeLabel(elapsedTime: elapsedTime, duration: duration)
     }
     
+     // MARK: - Actions Methods
     @IBAction func btnPlayClick(_ sender: Any) {
         if avPlayer.rate == 0
         {
@@ -206,7 +195,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func btnNextClick(_ sender: Any) {
-       
         guard let duration = avPlayer.currentItem?.duration else {return}
         let currenTime = CMTimeGetSeconds(avPlayer.currentTime())
         let newTime = currenTime + 5.0
@@ -218,25 +206,17 @@ class ViewController: UIViewController {
         self.updateTime()
     }
     @IBAction func btnZoomClick(_ sender: Any) {
-//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-//            if appDelegate.shouldRotate == true{
-//                appDelegate.shouldRotate = false
-//                isPresented = false
-//            }else{
-//                appDelegate.shouldRotate = true
-//                isPresented = true
-//            }
-//        }
         if isPresented {
             isPresented = false
+            isInPortrait = false
             let value = Int(UIInterfaceOrientation.landscapeLeft.rawValue)
             UIDevice.current.setValue(value, forKey: "orientation")
         }else{
             isPresented = true
+            isInPortrait = true
             let value = Int(UIInterfaceOrientation.portrait.rawValue)
             UIDevice.current.setValue(value, forKey: "orientation")
         }
-       
     }
     
     @IBAction func btnSoundClick(_ sender: Any) {
@@ -249,20 +229,6 @@ class ViewController: UIViewController {
         }
         
     }
-    
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        print(UIDevice.current.orientation.isLandscape)
-        
-    }
-    
-//    override var shouldAutorotate: Bool {
-//        return true
-//    }
-//
-//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-//        return .landscapeLeft
-//    }
-  
 }
 extension UIView {
     public func turnOffAutoResizing() {
