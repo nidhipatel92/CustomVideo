@@ -19,11 +19,6 @@ class ViewController: UIViewController {
     var muted : Bool = false
     var isPresented = true
     
-    var p = [NSLayoutConstraint]()
-    var l = [NSLayoutConstraint]()
-    var initialOrientation = true
-    var isInPortrait = false
-    
     @IBOutlet var lblVideoTime: UILabel!
     @IBOutlet var viewVideo: UIView!
     @IBOutlet var playerSilder: UISlider!
@@ -50,11 +45,20 @@ class ViewController: UIViewController {
         let currentPlayerItem = avPlayer.currentItem
         let duration = currentPlayerItem?.asset.duration
         print("Duration: \(CMTimeGetSeconds(duration!))")
-        
+        let seconds : Float64 = CMTimeGetSeconds(duration!)
+
         let newTime = self.formatTimeFor(seconds: CMTimeGetSeconds(duration!))
         print("New Time: \(newTime)")
         strStartTime = newTime as NSString
         lblVideoTime.text = "00:00" + "/" + (strStartTime as String) as String
+        
+        //Slider
+        playerSilder.minimumValue = 0
+        playerSilder.maximumValue = Float(seconds)
+        playerSilder.isContinuous = true
+        playerSilder.tintColor = UIColor.red
+        playerSilder.thumbTintColor = UIColor.clear
+        playerSilder.addTarget(self, action: #selector(ViewController.playbackSliderValueChanged(_:)), for: .valueChanged)
         
         let timeInterval: CMTime = CMTimeMakeWithSeconds(1.0, 10)
         timeObserver = avPlayer.addPeriodicTimeObserver(forInterval: timeInterval,queue: DispatchQueue.main)
@@ -64,16 +68,7 @@ class ViewController: UIViewController {
             self.playerSilder.setValue(Float(seconds), animated: true)
             self.updateTime()
         } as AnyObject
-        
-        playerSilder.minimumValue = 0
-        let seconds : Float64 = CMTimeGetSeconds(duration!)
-        playerSilder.maximumValue = Float(seconds)
-        playerSilder.isContinuous = true
-        playerSilder.tintColor = UIColor.red
-        playerSilder.thumbTintColor = UIColor.clear
-        playerSilder.addTarget(self, action: #selector(ViewController.playbackSliderValueChanged(_:)), for: .valueChanged)
-        
-        
+
     }
     override func viewWillDisappear(_ animated: Bool) {
         let value = Int(UIInterfaceOrientation.portrait.rawValue)
@@ -202,12 +197,10 @@ class ViewController: UIViewController {
     @IBAction func btnZoomClick(_ sender: Any) {
         if isPresented {
             isPresented = false
-            isInPortrait = false
             let value = Int(UIInterfaceOrientation.landscapeLeft.rawValue)
             UIDevice.current.setValue(value, forKey: "orientation")
         }else{
             isPresented = true
-            isInPortrait = true
             let value = Int(UIInterfaceOrientation.portrait.rawValue)
             UIDevice.current.setValue(value, forKey: "orientation")
         }
